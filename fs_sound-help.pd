@@ -1,0 +1,16 @@
+#N canvas 281 151 508 464 10;
+#X obj -129 6 cnv 15 500 30 empty empty fs_sound 20 12 0 14 -148502
+-262144 0;
+#X text -122 47 Freesound API Sound resource;
+#X text -125 70 http://www.freesound.org/docs/api/resources.html#sound-resource
+;
+#X obj -74 263 fs_sound;
+#X text 108 169 0 set api key;
+#X obj 42 169 loadbang;
+#X msg -73 191 46366;
+#X text -126 113 Only metadata for now;
+#X text -77 164 1 query sound id;
+#X msg 43 193 api_key <YOUR_API_KEY>;
+#X connect 5 0 9 0;
+#X connect 6 0 3 0;
+#X connect 9 0 3 0;
