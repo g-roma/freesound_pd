@@ -1,54 +1,57 @@
-#N canvas 117 23 1006 688 10;
-#X msg 293 264 next;
-#X msg 332 264 prev;
+#N canvas 113 51 1006 688 10;
+#X declare -lib purest_json;
+#X declare -lib purest_json -lib cyclone -lib list-abs -lib zexy;
+#X declare -lib purest_json -lib zexy -lib cyclone;
+#X msg 406 206 next;
+#X msg 445 206 prev;
 #X msg 626 73 load freesound_sound;
-#X msg 374 264 stop;
-#X obj 39 404 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 93 408 10 0 1e+06 0 - - -;
-#X obj -93 138 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X msg 487 206 stop;
+#X obj 192 348 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 97 446 r api_key;
-#X obj 346 118 s api_key;
-#X text 70 78 1 set query parameters;
-#X text 355 237 3 navigate search results;
+#X floatatom 249 353 10 0 1e+06 0 - - -;
+#X obj 491 85 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 166 399 r api_key;
+#X obj -136 124 s api_key;
+#X text 92 59 1 set query parameters;
+#X text 407 183 3 navigate search results;
 #X text 624 54 4 load into table (if wav or aif);
-#X text 409 61 0 set api key;
-#X obj 343 61 loadbang;
+#X text -137 56 0 set api key;
+#X obj -136 77 loadbang;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array freesound_snd 1.61678e+06 float 2;
 #X coords 0 1 1.61678e+06 -1 200 140 1;
-#X restore 620 138 graph;
-#X obj 632 396 hip~ 5;
-#X msg 632 297 bang;
-#X msg 671 296 stop;
-#X obj 634 435 dac~;
-#X obj 771 421 s loop;
-#X obj 719 332 spigot;
-#X obj 769 296 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X restore -121 492 graph;
+#X obj 641 379 hip~ 5;
+#X msg 641 280 bang;
+#X msg 680 279 stop;
+#X obj 642 418 dac~;
+#X obj 770 404 s loop;
+#X obj 728 315 spigot;
+#X obj 778 279 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 718 295 r loop;
-#X obj 772 392 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 728 278 r loop;
+#X obj 770 375 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 632 364 tabplay~ freesound_snd;
-#X text -139 101 2 perform search;
-#X msg 65 200 f .lowlevel.spectral_centroid.mean:[500 TO *];
-#X msg 46 164 f .lowlevel.spectral_energyband_low.mean:[0.0004 TO 0.0006]
+#X obj 641 347 tabplay~ freesound_snd;
+#X text 448 63 2 perform search;
+#X msg 91 166 f .lowlevel.spectral_centroid.mean:[500 TO *];
+#X msg 72 130 f .lowlevel.spectral_energyband_low.mean:[0.0004 TO 0.0006]
 ;
-#X obj 104 257 r api_key;
-#X msg 35 119 f .tonal.key_key:"A" .tonal.key_scale="minor" .tonal.key_strength:[0.8
+#X obj -34 155 r api_key;
+#X msg 61 85 f .tonal.key_key:"A" .tonal.key_scale="minor" .tonal.key_strength:[0.8
 TO *];
 #X obj 626 99 s load;
-#X obj 238 262 r load;
+#X obj 249 268 r load;
 #X obj -149 -14 cnv 15 1000 30 empty empty fs_content_search 20 12
 0 14 -148502 -262144 0;
 #X text -140 25 Freesound API content-based sound search resource;
 #X text 170 23 http://www.freesound.org/docs/api/resources.html#sound-content-based-search-resource
 ;
-#X obj 36 304 fs_content_search;
-#X obj 38 366 fs_results;
-#X obj 55 491 fs_sound;
-#X msg 344 85 api_key <YOUR_API_KEY>;
+#X obj 192 234 fs_content_search;
+#X obj 192 317 fs_results;
+#X obj 166 462 fs_sound;
+#X msg -136 100 api_key <YOUR_API_KEY>;
 #X connect 0 0 36 1;
 #X connect 1 0 36 1;
 #X connect 2 0 30 0;
