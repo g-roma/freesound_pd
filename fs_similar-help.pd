@@ -1,34 +1,37 @@
-#N canvas 62 22 805 552 10;
-#X obj 366 153 s api_key;
-#X text 429 96 0 set api key;
-#X obj 363 96 loadbang;
-#X obj 87 269 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 116 268 10 0 1e+06 0 - - -;
-#X obj 128 315 r api_key;
-#X obj 28 195 r api_key;
-#X obj 96 173 fs_similar;
-#X obj -92 106 int;
-#X obj -56 107 spigot;
-#X obj -24 78 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#N canvas 60 51 805 552 10;
+#X declare -lib purest_json;
+#X declare -lib purest_json -lib zexy -lib cyclone;
+#X declare -lib purest_json -lib cyclone -lib list-abs -lib zexy;
+#X obj -130 145 s api_key;
+#X text -127 73 0 set api key;
+#X obj -130 94 loadbang;
+#X obj 223 283 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 280 282 10 0 1e+06 0 - - -;
+#X obj 265 329 r api_key;
+#X obj 165 209 r api_key;
+#X obj 233 187 fs_similar;
+#X obj 38 164 int;
+#X obj 74 165 spigot;
+#X obj 106 136 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X text -133 78 similarity walk;
-#X msg 142 201 next;
-#X msg 181 201 prev;
-#X msg 223 201 stop;
-#X obj 117 147 r api_key;
-#X text 146 95 1 set seed sound id;
-#X msg 95 94 61170;
+#X text 8 140 similarity walk;
+#X msg 279 215 next;
+#X msg 318 215 prev;
+#X msg 360 215 stop;
+#X obj 254 161 r api_key;
+#X text 218 86 1 set seed sound id;
+#X msg 233 108 61170;
 #X obj -150 -14 cnv 15 800 30 empty empty fs_similar 20 12 0 14 -148502
 -262144 0;
-#X obj 103 347 fs_sound;
+#X obj 197 357 fs_sound;
 #X text -140 25 Freesound API sound similarity resource;
 #X text 123 27 http://www.freesound.org/docs/api/resources.html#sound-similarity-resource
 ;
-#X obj 86 231 fs_results;
-#X text 270 201 3 navigate results;
-#X msg 364 120 api_key <YOUR_API_KEY>;
-#X connect 2 0 24 0;
+#X obj 223 245 fs_results;
+#X msg -130 116 api_key <YOUR_API_KEY>;
+#X text 343 183 2 navigate results;
+#X connect 2 0 23 0;
 #X connect 4 0 8 0;
 #X connect 4 0 19 0;
 #X connect 5 0 19 0;
@@ -44,4 +47,4 @@
 #X connect 17 0 7 0;
 #X connect 22 0 3 0;
 #X connect 22 1 4 0;
-#X connect 24 0 0 0;
+#X connect 23 0 0 0;
