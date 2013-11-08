@@ -1,5 +1,5 @@
 A set of abstractions for accessing the Freesound API from Pure Data
 
-Requirements included in Pd extended on all platforms: zexy, cyclone, list-abs, oggread~
+Required libraries included in Pd-extended: zexy, cyclone, list-abs, pdogg
 
-Additional requirements: PuREST JSON
+Additional library: PuREST JSON
