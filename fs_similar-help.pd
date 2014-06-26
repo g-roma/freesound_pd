@@ -1,7 +1,8 @@
-#N canvas 60 51 805 552 10;
+#N canvas 693 43 805 552 10;
 #X declare -lib purest_json;
 #X declare -lib purest_json -lib zexy -lib cyclone;
-#X declare -lib purest_json -lib cyclone -lib list-abs -lib zexy;
+#X declare -lib purest_json -lib cyclone -lib list-abs -lib zexy -lib
+pdogg;
 #X obj -130 145 s api_key;
 #X text -127 73 0 set api key;
 #X obj -130 94 loadbang;
@@ -19,7 +20,7 @@
 #X msg 279 215 next;
 #X msg 318 215 prev;
 #X msg 360 215 stop;
-#X obj 254 161 r api_key;
+#X obj 280 161 r api_key;
 #X text 218 86 1 set seed sound id;
 #X msg 233 108 61170;
 #X obj -150 -14 cnv 15 800 30 empty empty fs_similar 20 12 0 14 -148502
@@ -29,9 +30,12 @@
 #X text 123 27 http://www.freesound.org/docs/api/resources.html#sound-similarity-resource
 ;
 #X obj 223 245 fs_results;
-#X msg -130 116 api_key <YOUR_API_KEY>;
-#X text 343 183 2 navigate results;
-#X connect 2 0 23 0;
+#X obj 308 123 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 339 122 2 make query;
+#X text 414 217 3 navigate results;
+#X msg -130 115 api_key <YOUR_API_KEY>;
+#X connect 2 0 26 0;
 #X connect 4 0 8 0;
 #X connect 4 0 19 0;
 #X connect 5 0 19 0;
@@ -47,4 +51,5 @@
 #X connect 17 0 7 0;
 #X connect 22 0 3 0;
 #X connect 22 1 4 0;
-#X connect 23 0 0 0;
+#X connect 23 0 7 0;
+#X connect 26 0 0 0;
