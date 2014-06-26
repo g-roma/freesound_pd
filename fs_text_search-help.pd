@@ -1,55 +1,58 @@
-#N canvas 194 80 1006 541 10;
-#X msg 102 143 f tag:loop;
-#X obj 38 103 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#N canvas 330 51 1006 541 10;
+#X declare -lib purest_json;
+#X declare -lib purest_json -lib cyclone -lib list-abs -lib zexy;
+#X declare -lib purest_json -lib zexy -lib cyclone;
+#X msg 194 125 f tag:loop;
+#X obj 130 85 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 168 198 next;
-#X msg 207 198 prev;
-#X msg 249 198 stop;
-#X obj 23 278 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 52 277 10 0 1e+06 0 - - -;
-#X obj -97 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X msg 325 156 next;
+#X msg 364 156 prev;
+#X msg 406 156 stop;
+#X obj 117 274 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 64 324 r api_key;
-#X obj 217 140 s api_key;
-#X obj 110 170 r api_key;
-#X text 36 79 1 set query parameters;
-#X text -97 194 2 perform search;
-#X text 185 172 3 navigate search results;
-#X text 481 131 4 load into table (if wav or aif);
-#X text 280 83 0 set api key;
-#X obj 214 83 loadbang;
+#X floatatom 174 289 10 0 1e+06 0 - - -;
+#X obj 368 77 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 99 326 r api_key;
+#X obj -141 115 s api_key;
+#X obj 202 152 r api_key;
+#X text 79 63 1 set query parameters;
+#X text 303 59 2 perform search;
+#X text 310 134 3 navigate search results;
+#X text 511 138 4 load into table (if wav or aif);
+#X text -75 63 0 set api key;
+#X obj -141 63 loadbang;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array freesound_snd_1 226997 float 2;
 #X coords 0 1 226997 -1 200 140 1 0 0;
-#X restore 481 182 graph;
-#X obj 493 440 hip~ 5;
-#X msg 493 341 bang;
-#X msg 532 340 stop;
-#X obj 495 479 dac~;
-#X obj 632 465 s loop;
-#X obj 580 376 spigot;
-#X obj 630 340 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X restore -133 342 graph;
+#X obj 561 432 hip~ 5;
+#X msg 561 333 bang;
+#X msg 600 332 stop;
+#X obj 562 471 dac~;
+#X obj 702 457 s loop;
+#X obj 648 368 spigot;
+#X obj 698 332 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 579 339 r loop;
-#X obj 633 436 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 648 331 r loop;
+#X obj 702 428 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 493 408 tabplay~ freesound_snd_1;
-#X msg 483 150 load freesound_snd_1;
-#X msg 4 135 q dubstep;
-#X obj -51 228 r api_key;
-#X msg 101 115 p 4;
-#X text -107 276 bangs when done ->;
-#X text 130 277 <- freesound sound id;
+#X obj 561 400 tabplay~ freesound_snd_1;
+#X msg 513 157 load freesound_snd_1;
+#X msg 96 117 q dubstep;
+#X obj -35 184 r api_key;
+#X msg 193 97 p 4;
+#X text -5 274 bangs when done ->;
+#X text 247 288 <- freesound sound id;
 #X obj -159 -24 cnv 15 1000 30 empty empty fs_text_search 20 12 0 14
 -148502 -262144 0;
 #X text -150 15 Freesound API (text) sound search resource;
 #X text 113 17 http://www.freesound.org/docs/api/resources.html#sound-search-resource
 ;
-#X obj 25 201 fs_text_search;
-#X obj 22 240 fs_results;
-#X obj 39 356 fs_sound;
-#X msg 215 107 api_key <YOUR_API_KEY>;
+#X obj 117 183 fs_text_search;
+#X obj 117 251 fs_results;
+#X obj 99 357 fs_sound;
+#X msg -141 87 api_key <YOUR_API_KEY>;
 #X connect 0 0 37 0;
 #X connect 1 0 0 0;
 #X connect 1 0 29 0;
