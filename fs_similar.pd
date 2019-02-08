@@ -1,26 +1,24 @@
-#N canvas 430 207 626 425 10;
-#X declare -lib purest_json;
-#X obj 162 -99 inlet;
-#X obj 209 28 urlparams;
-#X obj 209 126 outlet;
-#X obj 83 71 print params;
-#X obj 162 -11 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#N canvas 430 207 626 425 12;
+#X obj 130 47 inlet;
+#X obj 177 272 outlet;
+#X obj 51 217 print params;
+#X obj 130 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 416 -96 import purest_json;
-#X obj 209 56 pack s f;
-#X obj 209 -42 symbol;
-#X obj 162 -75 route bang api_key float;
-#X msg 209 -14 add api_key \$1;
-#X msg 209 93 GET http://www.freesound.org/api/sounds/\$2/similar/?\$1
+#X obj 177 202 pack s f;
+#X obj 177 104 symbol;
+#X obj 130 71 route bang api_key float;
+#X msg 177 132 add api_key \$1;
+#X msg 177 239 GET http://www.freesound.org/api/sounds/\$2/similar/?\$1
 ;
-#X connect 0 0 8 0;
-#X connect 1 0 3 0;
-#X connect 1 0 6 0;
-#X connect 4 0 1 0;
-#X connect 6 0 10 0;
+#X obj 177 174 purest_json/urlparams;
+#X connect 0 0 6 0;
+#X connect 3 0 9 0;
+#X connect 4 0 8 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 0;
+#X connect 6 1 5 0;
+#X connect 6 2 4 1;
 #X connect 7 0 9 0;
-#X connect 8 0 4 0;
-#X connect 8 1 7 0;
-#X connect 8 2 6 1;
-#X connect 9 0 1 0;
-#X connect 10 0 2 0;
+#X connect 8 0 1 0;
+#X connect 9 0 2 0;
+#X connect 9 0 4 0;
