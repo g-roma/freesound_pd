@@ -1,0 +1,120 @@
+#N canvas 528 66 562 378 12;
+#X obj 38 88 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 327 270 print INFO;
+#X obj 181 273 print RESULTS;
+#X obj 181 219 fs_query;
+#N canvas 0 22 569 380 API_KEY 0;
+#X obj 26 16 inlet;
+#X text 75 245 token lets you perform queries;
+#X text 77 259 access_token lets you download/upload/manage files;
+#X text 98 129 They look something like this:;
+#X text 126 40 Apply for a FREE API key:;
+#X text 102 63 http://www.freesound.org/api/apply/;
+#X obj 29 82 pack \$0;
+#X msg 26 162 \; \$1-q token F2c5YcFILaHeE0Epm1FwUy5gEYGcxg0CZZ5G2NGK
+\;;
+#X connect 0 0 6 0;
+#X connect 6 0 7 0;
+#X restore 38 115 pd API_KEY;
+#X text 35 55 Abstractions to Query and Download sounds from freesound.org
+, f 64;
+#X text 202 23 "Freesound Pd";
+#X floatatom 192 150 5 0 0 1 - - -;
+#X obj 181 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 203 125 <-- bang to query;
+#X text 243 150 <-- float is freesound ID;
+#X obj 398 327 fs_download;
+#X text 324 326 See also:;
+#X text 64 86 <-- first;
+#N canvas 528 76 527 579 more 0;
+#X obj 59 251 hradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#N canvas 640 91 538 327 search_modes 0;
+#X msg 70 135 mode 1 \, target lowlevel.pitch.mean:220 \, bang;
+#X msg 91 193 mode 2 \, filter tag:loop \, target rhythm.bpm:120 \,
+page_size 4 \, fields id \, bang;
+#X obj 32 242 s \$0-q;
+#X msg 33 53 mode 0 \, query kick \, fields id \, page_size 5 \, bang
+;
+#X text 23 30 mode 0 = text search;
+#X text 71 107 mode 1 = content search;
+#N canvas 266 120 942 583 more 0;
+#X msg 48 65 mode 1 \, descriptors_filter lowlevel.spectral_energyband_low.mean:[0.0004
+TO 0.0006];
+#X msg 57 110 mode 1 \, descriptors_filter lowlevel.spectral_centroid.mean:[500
+TO *];
+#X msg 93 245 page_size 5 \, fields id \, bang;
+#X msg 165 289 tonal.key_key:"C" tonal.key_scale="major" tonal.key_strength:[0.8
+TO *], f 71;
+#X obj 165 317 cyclone/tosymbol;
+#X obj 165 341 list prepend descriptors_filter;
+#X obj 165 365 list trim;
+#X msg 47 25 mode 1 \, descriptors_filter;
+#X msg 189 176 tonal.key_key:"A" tonal.key_scale="minor" tonal.key_strength:[0.8
+TO *];
+#X msg 258 434 lowlevel.mfcc.mean[1]:[17 TO 20] AND lowlevel.mfcc.mean[4]:[0
+TO 20], f 68;
+#X msg 259 460 lowlevel.mfcc.mean[0]:[-1124 TO -1121];
+#X msg 260 486 lowlevel.pitch.mean:[219.9 TO 220.1] AND lowlevel.pitch_salience.mean:[0.6
+TO *], f 80;
+#X msg 262 403 lowlevel.pitch.mean:[219.9 TO 220.1];
+#X obj 42 481 s \$0-q;
+#X connect 0 0 13 0;
+#X connect 1 0 13 0;
+#X connect 2 0 13 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 13 0;
+#X connect 7 0 13 0;
+#X restore 267 108 pd more on content search;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 3 0 2 0;
+#X restore 231 324 pd search_modes;
+#X msg 59 271 mode \$1;
+#X obj 59 295 s \$0-q;
+#X msg 146 409 next;
+#X obj 146 433 s \$0-q;
+#X msg 237 409 prev;
+#X obj 237 433 s \$0-q;
+#X text 155 257 mode 0 = text search;
+#X text 155 277 mode 1 = content search;
+#X text 155 297 mode 2 = combined (text/content) search;
+#X text 92 225 There are different search modes:;
+#X text 148 324 See here:;
+#X text 99 358 when querying on any of these modes \, use these to
+change page results, f 36;
+#X text 98 504 http://www.freesound.org/docs/api/;
+#X text 59 481 For a comprehensive list of search parameters:;
+#X text 111 22 There are different "sound" modes;
+#X msg 84 69 1234 0;
+#X msg 84 91 1234 1;
+#X msg 84 113 1234 2;
+#X msg 84 135 1234 3;
+#X obj 70 174 s \$0-q;
+#X obj 26 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 141 112 <-- get all similar sounds (RESULTS outlet);
+#X text 141 68 <-- get all information of a sound (INFO outlet);
+#X text 141 90 <-- get all analysis-data of a sound (CRASH!!!);
+#X text 141 134 <-- get all comments of a sound (NOTHING!!!);
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 6 0 7 0;
+#X connect 17 0 21 0;
+#X connect 18 0 21 0;
+#X connect 19 0 21 0;
+#X connect 20 0 21 0;
+#X connect 22 0 21 0;
+#X restore 397 207 pd more;
+#X obj 199 192 r \$0-q;
+#X connect 0 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 1 1 0;
+#X connect 7 0 3 0;
+#X connect 8 0 3 0;
+#X connect 15 0 3 0;
