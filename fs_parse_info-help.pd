@@ -1,0 +1,43 @@
+#N canvas 563 105 586 647 12;
+#X obj 40 288 fs_parse_info;
+#X obj 66 220 fs_query;
+#X obj 40 532 t a b;
+#X obj 40 556 print;
+#X obj 87 554 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 245 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 245 207 \$1 \, bang;
+#X obj 245 183 random 50000;
+#X obj 66 176 r \$0-q;
+#X obj 356 236 s \$0-q;
+#X msg 446 186 3123 \, bang;
+#X msg 356 184 1234 \, bang;
+#X text 104 264 <-- parsing the 'INFO' outlet;
+#X text 288 559 [fs_parse_info];
+#X text 213 539 ^^ the object above is simply created as:;
+#X text 215 28 "Freesound Pd";
+#X text 303 153 Try basic sound queries:;
+#X text 68 55 This is a Graph-On-Parent abstraction that parses and
+displays the data obtained from the 'INFO' outlet when 'sound' queries
+are performed. An inlet receives the data \, and the outlet outputs
+data separated into sections. The METADATA section comprises text files
+holding more data that can be shown with simple Pure Data atoms.;
+#N canvas 0 22 450 300 api_key 0;
+#X obj 35 106 fs_tokens 1 tokens.txt;
+#X obj 35 87 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 35 129 s \$0-q;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X restore 479 15 pd api_key;
+#X connect 0 0 2 0;
+#X connect 1 2 0 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 5 0 7 0;
+#X connect 6 0 9 0;
+#X connect 7 0 6 0;
+#X connect 8 0 1 0;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;

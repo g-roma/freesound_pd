@@ -1,4 +1,5 @@
 #N canvas 0 22 748 657 12;
+#X declare -path purest_json;
 #X obj 57 497 purest_json/rest;
 #X obj 57 24 inlet;
 #X obj 57 342 list;
@@ -27,6 +28,8 @@
 #X obj 57 531 print fs_download_ERROR:;
 #X obj 57 593 outlet done;
 #X obj 57 80 route float path access_token, f 53;
+#X text 426 544 see fs_download-help.pd;
+#X obj 498 21 declare -path purest_json;
 #X connect 0 0 17 0;
 #X connect 0 1 18 0;
 #X connect 1 0 19 0;

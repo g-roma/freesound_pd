@@ -1,0 +1,31 @@
+#N canvas 524 47 524 388 12;
+#X text 153 322 Apply for a FREE API key:;
+#X text 119 339 http://www.freesound.org/api/apply/;
+#X text 95 85 "client_id" : lets you get an api_key;
+#X text 67 101 "token/api_key" : lets you perform queries;
+#X text 25 116 "access_token/oauth2" : lets you download/upload/manage
+files, f 70;
+#X text 67 130 "refresh_token" : lets you refresh the access_token
+;
+#X obj 36 249 clone fs_tokens 4 tokens.txt;
+#X obj 305 209 r token-0;
+#X text 48 50 This patch loads up a text file named <arg 2> \, with:
+;
+#X obj 331 232 r token-1;
+#X obj 355 256 r token-2;
+#X obj 385 279 r token-3;
+#X msg 36 220 1;
+#X msg 68 221 all bang;
+#X obj 36 273 print;
+#X text 181 23 "Freesound Pd";
+#X text 44 156 It is meant to be cloned: when you clone it \, use <arg
+1> as text size \, so that every line is sent to its corresponding
+'receive' object:;
+#X obj 398 310 t a;
+#X connect 6 0 14 0;
+#X connect 7 0 17 0;
+#X connect 9 0 17 0;
+#X connect 10 0 17 0;
+#X connect 11 0 17 0;
+#X connect 12 0 6 0;
+#X connect 13 0 6 0;
