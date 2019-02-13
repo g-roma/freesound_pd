@@ -1,5 +1,5 @@
 #N canvas 528 66 562 378 12;
-#X obj 282 252 print INFO;
+#X obj 282 252 print DATA;
 #X obj 54 252 print RESULTS;
 #X obj 136 201 fs_query;
 #X text 35 55 Abstractions to Query and Download sounds from freesound.org
@@ -14,15 +14,21 @@
 #X obj 154 174 r \$0-q;
 #X text 269 327 See also help for:;
 #N canvas 0 22 450 300 api_key 0;
-#X obj 40 94 fs_tokens 1 tokens.txt;
 #X obj 40 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 40 117 s \$0-q;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
+#X obj 184 121 list prepend client_secret;
+#X obj 184 146 list trim;
+#X obj 184 170 s \$0-q;
+#X obj 40 94 fs_tokens client.json;
+#X obj 40 34 loadbang;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 1 1 0;
+#X connect 5 0 0 0;
 #X restore 449 20 pd api_key;
 #X text 333 189 See here -->;
-#X text 280 274 See also fs_parse-info.pd;
+#X text 280 274 See also fs_display.pd;
 #X obj 162 252 print COUNT;
 #N canvas 591 92 442 339 TUTORIAL 0;
 #X text 78 279 http://www.freesound.org/docs/api/;
@@ -61,9 +67,9 @@ list of two floats (integers...). The first is the sound unique "id"
 #X text 54 57 There are different things you can do with "sounds mode".
 ;
 #X text 142 271 <-- get all comments of a sound (RESULTS outlet);
-#X text 80 368 ** NOTE:use this mode with the [fs_parse-info] abstraction
+#X text 80 368 ** NOTE:use this mode with the [fs_display] abstraction
 ;
-#X text 142 205 <-- get all information of a sound (INFO outlet) **
+#X text 142 205 <-- get all data of a sound (DATA outlet) **
 ;
 #X text 55 134 This is what each mode allows you to do. Remember to
 hit the bang to make the query. Results are printed in the console
@@ -182,7 +188,7 @@ apply 17 7 0 10 -262144 -1 -1;
 #X symbolatom 41 286 20 0 0 2 fields #0-fields-word-set #0-fields-word
 ;
 #X obj 41 226 nbx 3 15 0 31 0 0 \$0-fields-num \$0-fields-num-set fields
-0 -8 0 12 -262144 -1 -1 1 256;
+0 -8 0 12 -262144 -1 -1 0 256;
 #X obj 42 313 bng 15 250 50 0 \$0-fields-apply \$0-fields-apply-set
 apply 17 7 0 10 -262144 -1 -1;
 #X obj 94 249 bng 15 250 50 0 \$0-fields-clear \$0-fields-clear-set
@@ -206,7 +212,7 @@ change page results, f 37;
 #X obj 309 147 bng 15 250 50 0 \$0-query-apply \$0-query-apply-set
 apply 17 7 0 10 -262144 -1 -1;
 #X obj 416 122 nbx 3 15 1 100 0 0 \$0-page_size-num \$0-page_size-num-set
-page_size 0 -8 0 12 -262144 -1 -1 2 256;
+page_size 0 -8 0 12 -262144 -1 -1 1 256;
 #X obj 416 145 bng 15 250 50 0 \$0-page_size-apply \$0-page_size-apply-set
 apply 17 7 0 10 -262144 -1 -1;
 #X obj 198 88 cnv 15 100 80 empty empty MODE 10 12 0 14 -233017 -66577

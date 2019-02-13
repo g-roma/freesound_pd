@@ -1,9 +1,9 @@
 #N canvas 160 0 971 778 12;
 #X declare -path purest_json;
-#X obj 60 26 inlet;
+#X obj 30 26 inlet;
 #X obj 400 373 purest_json/urlparams;
 #X obj 400 343 list trim;
-#X obj 535 98 symbol;
+#X obj 535 72 symbol;
 #X obj 412 264 symbol;
 #X obj 400 317 list prepend add;
 #X msg 345 305 clear;
@@ -148,9 +148,9 @@
 #X connect 7 0 3 0;
 #X restore 159 326 pd sounds mode;
 #X text 636 136 sounds \, analysis \, similar \, comments;
-#X obj 598 750 outlet INFO;
+#X obj 598 750 outlet DATA;
 #X obj 147 750 outlet RESULTS;
-#X obj 60 81 route api_key;
+#X obj 175 53 route api_key;
 #X text 552 289 <-- api_key = token;
 #X text 732 694 see fs_query-help.pd;
 #X obj 685 32 declare -path purest_json;
@@ -158,7 +158,8 @@
 #X obj 147 645 route results count;
 #X obj 55 541 t a a;
 #X obj 55 565 print;
-#X connect 0 0 40 0;
+#X obj 30 53 route client_secret;
+#X connect 0 0 48 0;
 #X connect 1 0 27 2;
 #X connect 2 0 1 0;
 #X connect 3 0 30 0;
@@ -209,3 +210,5 @@
 #X connect 45 2 35 1;
 #X connect 46 0 47 0;
 #X connect 46 1 24 0;
+#X connect 48 0 3 0;
+#X connect 48 1 40 0;

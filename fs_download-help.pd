@@ -4,7 +4,7 @@
 #X obj 134 308 print;
 #X msg 153 136 344758;
 #X msg 170 171 path .;
-#X text 43 44 Abstractions to Query and Download sounds from freesound.org
+#X text 43 44 Download sounds from freesound.org
 , f 64;
 #X text 211 18 "Freesound Pd";
 #X text 184 108 <-- float is freesound id;
@@ -36,12 +36,18 @@
 #X obj 439 338 fs_query;
 #X text 270 339 see also helpfile for:;
 #N canvas 0 22 450 300 api_key 0;
-#X obj 50 95 fs_tokens 2 tokens.txt;
-#X obj 50 119 s \$0-d;
 #X obj 51 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
+#X obj 50 95 fs_tokens tokens.json;
+#X obj 50 119 list prepend access_token;
+#X obj 50 143 list trim;
+#X obj 50 167 s \$0-d;
+#X obj 55 37 loadbang;
 #X connect 0 0 1 0;
-#X connect 2 0 0 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 0 0;
 #X restore 447 21 pd api_key;
 #X text 281 242 check it -->;
 #X connect 0 0 2 0;

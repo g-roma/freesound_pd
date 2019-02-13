@@ -1,6 +1,6 @@
 #N canvas 480 0 592 436 12;
 #X declare -path purest_json;
-#X obj 48 12 inlet INFO;
+#X obj 48 12 inlet DATA;
 #N canvas 0 22 633 628 FILE 0;
 #X symbolatom 177 120 0 0 0 0 type - -;
 #X obj 176 75 symbol;
@@ -258,7 +258,7 @@ samplerate, f 19;
 #X connect 7 1 5 0;
 #X connect 8 0 2 0;
 #X restore 48 37 pd clear_first;
-#X text 344 368 see fs_parse_info-help.pd;
+#X text 344 368 see fs_display-help.pd;
 #X connect 0 0 13 0;
 #X connect 1 0 10 0;
 #X connect 1 1 3 0;
