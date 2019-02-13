@@ -7,8 +7,11 @@ Revised 2019 so that only dependencies are `purest_json` and `ggee/getdir` (for 
 ## Abstractions
 
 [fs_download](fs_download.pd)	Download sound from [Freesound](http://www.freesound.org/)
+
 [fs_query](fs_query.pd)	Query sound from [Freesound](http://www.freesound.org/)
+
 [fs_display](fs_display.pd)	Display data from a sound entry
+
 [fs_tokens](fs_tokens.pd)	Load json files with client and access tokens.
 
 
