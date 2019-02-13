@@ -2,7 +2,7 @@
 
 A set of abstractions for accessing the [Freesound](http://www.freesound.org/) API from within Pure Data.
 
-Revised 2019 so that only dependencies are `purest_json` and `ggee/getdir` (for `ggee/getdir`) both available via `deken`, Pure Data's package manager.
+Revised 2019 so that only dependencies are `purest_json` and `ggee` (for `ggee/getdir`) both available via `deken`, Pure Data's package manager.
 
 ## Abstractions
 
