@@ -1,0 +1,711 @@
+#N canvas 528 66 562 378 12;
+#X obj 282 252 print DATA;
+#X obj 54 252 print RESULTS;
+#X obj 136 201 fs_query;
+#X text 35 55 Abstractions to Query and Download sounds from freesound.org
+, f 64;
+#X text 202 23 "Freesound Pd";
+#X floatatom 147 132 5 0 0 1 - - -;
+#X obj 136 109 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 158 107 <-- bang to query;
+#X text 198 132 <-- float is freesound ID;
+#X obj 411 329 fs_download;
+#X obj 154 174 r \$0-q;
+#X text 269 327 See also help for:;
+#N canvas 0 22 450 300 api_key 0;
+#X obj 40 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 184 121 list prepend client_secret;
+#X obj 184 146 list trim;
+#X obj 184 170 s \$0-q;
+#X obj 40 94 fs_tokens client.json;
+#X obj 40 34 loadbang;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 1 1 0;
+#X connect 5 0 0 0;
+#X restore 449 20 pd api_key;
+#X text 333 189 See here -->;
+#X text 280 274 See also fs_display.pd;
+#X obj 162 252 print COUNT;
+#N canvas 591 92 442 339 TUTORIAL 0;
+#X text 78 279 http://www.freesound.org/docs/api/;
+#X text 42 259 For a comprehensive list of search parameters:;
+#X text 38 103 1) Searching for specific sounds ("sounds mode");
+#X text 36 172 2) Searching by querying ("search mode");
+#X text 62 125 For this you use sound "id" -->;
+#X text 61 195 For this you use parameters -->;
+#X text 35 229 ---------------------------------------------------
+;
+#X text 38 37 ---------------------------------------------------;
+#X text 38 7 ---------------------------------------------------;
+#X text 27 14 ||, f 1;
+#X text 394 15 ||, f 1;
+#X text 34 67 There are two ways of getting sounds:;
+#N canvas 533 132 549 428 SOUNDS_MODE 0;
+#X msg 85 206 1234 0;
+#X msg 85 228 1234 1;
+#X msg 85 250 1234 2;
+#X obj 85 312 s \$0-q;
+#X obj 50 223 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 142 249 <-- get all similar sounds (RESULTS outlet);
+#X text 142 227 <-- get all analysis-data of a sound (CRASH!!!);
+#X msg 85 272 44561 3;
+#X text 27 14 ||, f 1;
+#X text 504 15 ||, f 1;
+#X text 226 24 SOUNDS MODE;
+#X text 38 7 -------------------------------------------------------------------
+, f 67;
+#X text 38 37 -------------------------------------------------------------------
+, f 67;
+#X text 55 81 The way to access each different way is by sending a
+list of two floats (integers...). The first is the sound unique "id"
+\, and the second is the mode (0-3) which you can use.;
+#X text 54 57 There are different things you can do with "sounds mode".
+;
+#X text 142 271 <-- get all comments of a sound (RESULTS outlet);
+#X text 80 368 ** NOTE:use this mode with the [fs_display] abstraction
+;
+#X text 142 205 <-- get all data of a sound (DATA outlet) **
+;
+#X text 55 134 This is what each mode allows you to do. Remember to
+hit the bang to make the query. Results are printed in the console
+\, coming out of different outlets \, as follows:;
+#X connect 0 0 3 0;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 4 0 3 0;
+#X connect 7 0 3 0;
+#X restore 293 128 pd SOUNDS_MODE;
+#N canvas 539 154 540 278 SEARCH_MODE 0;
+#X text 27 14 ||, f 1;
+#X text 504 15 ||, f 1;
+#X text 38 7 -------------------------------------------------------------------
+, f 67;
+#X text 38 37 -------------------------------------------------------------------
+, f 67;
+#X text 226 24 SEARCH MODE;
+#X text 54 57 There are different things you can do with "search mode".
+;
+#X text 55 81 You first send set the "mode" (0-2) \, which defines
+the type of search you will be performing:;
+#X text 121 126 These are the different search modes:;
+#X text 92 209 mode 2 = combined search -->;
+#X text 93 168 mode 0 = text search -->;
+#X text 93 188 mode 1 = content search -->;
+#N canvas 542 253 545 399 SEARCH_COMBINED 0;
+#X msg 29 50 mode 2 \, filter tag:loop \, target rhythm.bpm:120 \,
+page_size 4 \, fields id \, bang;
+#X obj 32 242 s \$0-q;
+#X text 38 31 mode 2 = combined (text/content) search;
+#X text 143 97 (mode 2 might take longer);
+#X msg 197 322 next;
+#X obj 197 346 s \$0-q;
+#X msg 288 322 prev;
+#X obj 288 346 s \$0-q;
+#X text 143 262 when using any of these search modes \, use these to
+change page results, f 37;
+#X connect 0 0 1 0;
+#X connect 4 0 5 0;
+#X connect 6 0 7 0;
+#X restore 301 211 pd SEARCH_COMBINED;
+#N canvas 542 253 545 399 SEARCH_CONTENT 0;
+#X msg 70 135 mode 1 \, target lowlevel.pitch.mean:220 \, bang;
+#X obj 32 242 s \$0-q;
+#X text 71 107 mode 1 = content search;
+#N canvas 266 120 942 583 more 0;
+#X msg 48 65 mode 1 \, descriptors_filter lowlevel.spectral_energyband_low.mean:[0.0004
+TO 0.0006];
+#X msg 57 110 mode 1 \, descriptors_filter lowlevel.spectral_centroid.mean:[500
+TO *];
+#X msg 93 245 page_size 5 \, fields id \, bang;
+#X msg 165 289 tonal.key_key:"C" tonal.key_scale="major" tonal.key_strength:[0.8
+TO *], f 71;
+#X obj 165 317 cyclone/tosymbol;
+#X obj 165 341 list prepend descriptors_filter;
+#X obj 165 365 list trim;
+#X msg 47 25 mode 1 \, descriptors_filter;
+#X msg 189 176 tonal.key_key:"A" tonal.key_scale="minor" tonal.key_strength:[0.8
+TO *];
+#X msg 258 434 lowlevel.mfcc.mean[1]:[17 TO 20] AND lowlevel.mfcc.mean[4]:[0
+TO 20], f 68;
+#X msg 259 460 lowlevel.mfcc.mean[0]:[-1124 TO -1121];
+#X msg 260 486 lowlevel.pitch.mean:[219.9 TO 220.1] AND lowlevel.pitch_salience.mean:[0.6
+TO *], f 80;
+#X msg 262 403 lowlevel.pitch.mean:[219.9 TO 220.1];
+#X obj 42 481 s \$0-q;
+#X connect 0 0 13 0;
+#X connect 1 0 13 0;
+#X connect 2 0 13 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 13 0;
+#X connect 7 0 13 0;
+#X restore 267 108 pd more on content search;
+#X msg 180 333 next;
+#X obj 180 357 s \$0-q;
+#X msg 271 333 prev;
+#X obj 271 357 s \$0-q;
+#X text 127 277 when using any of these search modes \, use these to
+change page results, f 37;
+#X connect 0 0 1 0;
+#X connect 4 0 5 0;
+#X connect 6 0 7 0;
+#X restore 301 190 pd SEARCH_CONTENT;
+#N canvas 541 233 558 442 SEARCH_TEXT 0;
+#X text 27 14 ||, f 1;
+#X text 504 15 ||, f 1;
+#X text 38 7 -------------------------------------------------------------------
+, f 67;
+#X text 38 37 -------------------------------------------------------------------
+, f 67;
+#X text 226 24 SEARCH TEXT;
+#X obj 351 191 cnv 15 100 80 empty empty NORMALIZED 10 12 0 14 -233017
+-66577 0;
+#X obj 361 214 tgl 15 0 \$0-normalized \$0-normalized-set normalized
+17 7 0 10 -262144 -1 -1 0 1;
+#X obj 361 235 bng 15 250 50 0 \$0-normalized-apply \$0-normalized-apply-set
+apply 17 7 0 10 -262144 -1 -1;
+#X obj 198 191 cnv 15 150 140 empty empty DESCRIPTORS 10 12 0 14 -233017
+-66577 0;
+#X symbolatom 203 288 20 0 0 2 descriptors #0-descriptors-word-set
+#0-descriptors-word;
+#X obj 203 228 nbx 3 15 0 370 0 0 \$0-desc-num \$0-desc-num-set desc
+0 -8 0 12 -262144 -1 -1 0 256;
+#X obj 204 313 bng 15 250 50 0 \$0-desc-apply \$0-desc-apply-set apply
+17 7 0 10 -262144 -1 -1;
+#X obj 256 253 bng 15 250 50 0 \$0-desc-clear \$0-desc-clear-set clear
+17 7 0 10 -262144 -1 -1;
+#X symbolatom 256 228 10 0 0 2 word #0-desc-word-set #0-desc-word;
+#X obj 205 251 bng 15 250 50 0 \$0-desc-add \$0-desc-add-set add 17
+7 0 10 -262144 -1 -1;
+#X obj 35 191 cnv 15 160 140 empty empty FIELDS 10 12 0 14 -233017
+-66577 0;
+#X symbolatom 41 286 20 0 0 2 fields #0-fields-word-set #0-fields-word
+;
+#X obj 41 226 nbx 3 15 0 31 0 0 \$0-fields-num \$0-fields-num-set fields
+0 -8 0 12 -262144 -1 -1 0 256;
+#X obj 42 313 bng 15 250 50 0 \$0-fields-apply \$0-fields-apply-set
+apply 17 7 0 10 -262144 -1 -1;
+#X obj 94 249 bng 15 250 50 0 \$0-fields-clear \$0-fields-clear-set
+clear 17 7 0 10 -262144 -1 -1;
+#X symbolatom 94 226 10 0 0 2 word #0-field-word-set #0-field-word
+;
+#X obj 43 249 bng 15 250 50 0 \$0-fields-add \$0-fields-add-set add
+17 7 0 10 -262144 -1 -1;
+#X msg 206 383 next;
+#X obj 206 407 s \$0-q;
+#X msg 297 383 prev;
+#X obj 297 407 s \$0-q;
+#X text 155 340 when using any of these search modes \, use these to
+change page results, f 37;
+#X obj 301 88 cnv 15 100 80 empty empty QUERY 10 12 0 14 -233017 -66577
+0;
+#X obj 404 88 cnv 15 100 80 empty empty PAGE_SIZE 10 12 0 14 -233017
+-66577 0;
+#X symbolatom 309 122 0 0 0 2 query #0-query-word-set #0-query-word
+;
+#X obj 309 147 bng 15 250 50 0 \$0-query-apply \$0-query-apply-set
+apply 17 7 0 10 -262144 -1 -1;
+#X obj 416 122 nbx 3 15 1 100 0 0 \$0-page_size-num \$0-page_size-num-set
+page_size 0 -8 0 12 -262144 -1 -1 1 256;
+#X obj 416 145 bng 15 250 50 0 \$0-page_size-apply \$0-page_size-apply-set
+apply 17 7 0 10 -262144 -1 -1;
+#X obj 198 88 cnv 15 100 80 empty empty MODE 10 12 0 14 -233017 -66577
+0;
+#X obj 210 122 hradio 15 1 0 3 \$0-mode \$0-mode-set mode 0 -8 0 10
+-262144 -1 -1 0;
+#X obj 209 144 bng 15 250 50 0 \$0-mode-apply \$0-mode-apply-set apply
+17 7 0 10 -262144 -1 -1;
+#X obj 35 88 cnv 15 160 100 empty empty SORT 10 12 0 14 -233017 -66577
+0;
+#X obj 46 168 bng 15 250 50 0 \$0-sort-apply \$0-sort-apply-set apply
+17 7 0 10 -262144 -1 -1;
+#X obj 47 147 hradio 15 1 0 9 \$0-sort-num \$0-sort-num-set empty 0
+-8 0 10 -262144 -1 -1 0;
+#X symbolatom 46 123 0 0 0 2 sort #0-sort-word-set #0-sort-word;
+#X obj 437 342 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 437 362 s \$0-q;
+#X connect 22 0 23 0;
+#X connect 24 0 25 0;
+#X connect 40 0 41 0;
+#X restore 301 169 pd SEARCH_TEXT;
+#N canvas 0 22 450 300 gui_for_this_section 0;
+#X msg 24 129 sort \$1;
+#N canvas 139 51 445 525 sort 0;
+#X obj 140 323 list split 1;
+#X obj 102 462 outlet;
+#X obj 110 54 text define -k \$0-sort;
+#A set score Sort by a relevance score returned by our search engine
+(default) \; duration_desc Sort by the duration of the sounds longest
+sounds first \; duration_asc Same as above but shortest sounds first
+\; created_desc Sort by the date of when the sound was added. newest
+sounds first \; created_asc Same as above but oldest sounds first \;
+downloads_desc Sort by the number of downloads most downloaded sounds
+first \; downloads_asc Same as above but least downloaded sounds first
+\; rating_desc Sort by the average rating given to the sounds highest
+rated first \; rating_asc Same as above but lowest rated sounds first
+\;;
+#X obj 142 223 text get \$0-sort;
+#X obj 142 185 r \$0-sort-num;
+#X obj 138 368 symbol;
+#X obj 102 157 r \$0-sort-apply;
+#X obj 103 417 symbol;
+#X obj 143 257 t a a;
+#X obj 276 407 print SORT;
+#X obj 271 372 list trim;
+#X obj 248 257 list split 1;
+#X obj 257 305 list append :;
+#X obj 264 338 list;
+#X obj 148 396 t a a;
+#X obj 181 468 s \$0-sort-word-set;
+#X connect 0 0 5 0;
+#X connect 3 0 8 0;
+#X connect 4 0 3 0;
+#X connect 5 0 14 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 0 0;
+#X connect 8 1 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 12 0;
+#X connect 11 1 13 1;
+#X connect 12 0 13 0;
+#X connect 13 0 10 0;
+#X connect 14 0 7 1;
+#X connect 14 1 15 0;
+#X coords 0 525 1 524 188 45 0;
+#X restore 24 104 pd sort;
+#X msg 118 127 query \$1;
+#X obj 118 152 s \$0-q;
+#X obj 24 153 s \$0-q;
+#N canvas 0 22 537 461 query 0;
+#X obj 198 57 r \$0-query-word;
+#X obj 130 96 symbol;
+#X obj 78 55 r \$0-query-apply;
+#X obj 130 120 outlet;
+#X text 22 166 The query! The query is the main parameter used to define
+a query. You can type several terms separated by spaces or phrases
+wrapped inside quote ‘”’ characters. For every term \, you can
+also use ‘+’ and ‘-‘ modifier characters to indicate that a
+term is “mandatory” or “prohibited” (by default \, terms are
+considered to be “mandatory”). For example \, in a query such as
+query=term_a -term_b \, sounds including term_b will not match the
+search criteria. The query does a weighted search over some sound properties
+including sound tags \, the sound name \, its description \, pack name
+and the sound id. Therefore \, searching for query=123 will find you
+sounds with id 1234 \, sounds that have 1234 in the description \,
+in the tags \, etc. You’ll find some examples below. Using an empty
+query (query= or query="") will return all Freeosund sounds.;
+#X text 25 405 https://freesound.org/docs/api/resources_apiv2.html#request-parameters-text-search-parameters
+;
+#X connect 0 0 1 1;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X restore 118 102 pd query;
+#X obj 223 149 s \$0-q;
+#N canvas 0 22 450 300 page_size 0;
+#X obj 109 179 outlet;
+#X obj 211 94 r \$0-page_size-num;
+#X obj 109 155 f 5;
+#X obj 78 55 r \$0-page_size-apply;
+#X connect 1 0 2 1;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X restore 223 99 pd page_size;
+#X msg 223 124 page_size \$1;
+#N canvas 378 120 621 442 fields 0;
+#X obj 399 42 text define -k \$0-fields;
+#A set id \; url \; name \; tags \; description \; geotag \; created
+\; license \; type \; channels \; filesize \; bitrate \; bitdepth \;
+duration \; samplerate \; username \; pack \; download \; bookmark
+\; previews \; images \; num_downloads \; avg_rating \; num_ratings
+\; rate \; comments \; num_comments \; comment \; similar_sounds \;
+analysis \; analysis_stats \; analysis_frames \;;
+#X obj 276 44 r \$0-fields-num;
+#X obj 276 108 text get \$0-fields;
+#X obj 276 132 route bang;
+#X obj 276 76 change;
+#X obj 423 216 list fromsymbol;
+#X obj 122 292 list store;
+#X obj 349 384 list prepend append;
+#X obj 349 408 list trim;
+#X obj 189 342 list tosymbol;
+#X obj 122 314 route bang;
+#X obj 189 405 s \$0-fields-word-set;
+#X obj 124 50 r \$0-fields-word;
+#X obj 11 15 r \$0-fields-apply;
+#X obj 45 89 symbol;
+#X msg 221 288 32, f 2;
+#X obj 176 245 r \$0-fields-clear;
+#X obj 347 273 f;
+#X obj 376 274 + 1;
+#X obj 346 323 sel;
+#X msg 228 313 0;
+#X obj 420 291 s \$0-field-word-set;
+#X obj 318 219 list;
+#X obj 268 178 r \$0-fields-add;
+#X obj 435 140 symbol;
+#X obj 120 261 t b a;
+#X obj 38 126 outlet;
+#X text 161 11 (default fields=id \, name \, tags \, username \, license).
+;
+#X obj 346 301 < 1;
+#X obj 435 188 t a a;
+#X obj 318 243 t a b;
+#X msg 360 354 37 50 67;
+#X text 428 355 <-- a comma in hex : %2C;
+#X connect 1 0 4 0;
+#X connect 2 0 3 0;
+#X connect 3 1 24 0;
+#X connect 4 0 2 0;
+#X connect 5 0 22 1;
+#X connect 6 0 10 0;
+#X connect 7 0 8 0;
+#X connect 8 0 25 0;
+#X connect 9 0 11 0;
+#X connect 10 1 9 0;
+#X connect 12 0 14 1;
+#X connect 13 0 14 0;
+#X connect 14 0 26 0;
+#X connect 15 0 9 0;
+#X connect 16 0 15 0;
+#X connect 16 0 20 0;
+#X connect 16 0 6 1;
+#X connect 17 0 18 0;
+#X connect 17 0 28 0;
+#X connect 18 0 17 1;
+#X connect 19 0 31 0;
+#X connect 20 0 17 1;
+#X connect 22 0 30 0;
+#X connect 23 0 22 0;
+#X connect 24 0 29 0;
+#X connect 25 0 6 0;
+#X connect 25 1 6 0;
+#X connect 28 0 19 0;
+#X connect 29 0 5 0;
+#X connect 29 1 21 0;
+#X connect 30 0 7 0;
+#X connect 30 1 17 0;
+#X connect 31 0 7 0;
+#X restore 22 190 pd fields;
+#X msg 22 214 fields \$1;
+#X obj 22 238 s \$0-q;
+#X obj 114 240 s \$0-q;
+#N canvas 406 43 759 523 descriptors 0;
+#X obj 316 161 route bang;
+#X obj 316 105 change;
+#X obj 388 275 list fromsymbol;
+#X obj 87 351 list store;
+#X obj 347 418 list prepend append;
+#X obj 345 450 list trim;
+#X obj 154 401 list tosymbol;
+#X obj 87 373 route bang;
+#X obj 45 89 symbol;
+#X msg 186 347 32, f 2;
+#X obj 304 359 f;
+#X obj 333 360 + 1;
+#X obj 267 397 sel;
+#X obj 267 372 <;
+#X msg 193 372 0;
+#X obj 283 278 list;
+#X obj 401 196 symbol;
+#X obj 293 306 spigot 1;
+#X obj 304 335 t b a b;
+#X msg 358 327 0;
+#X msg 367 302 1;
+#X obj 400 247 t a a b;
+#X obj 85 320 t b a;
+#X obj 38 126 outlet;
+#N canvas 0 22 551 512 about_descriptors 0;
+#X text 38 151 Indicates which sound content-based descriptors should
+be included in every sound of the response. This parameter will have
+no effect if analysis property is not included in the fields request
+parameter. Descriptor names can be any of those listed in available-descriptors
+\, and must be separated by commas. For example \, if fields=analysis&descriptors=lowlevel.spectral_centroid
+\, lowlevel.barkbands.mean \, the response will include \, for every
+returned sound \, all statistics of the spectral centroid descriptor
+and the mean of the barkbands. Descriptor values are included in the
+response inside the analysis sound property (see the examples). analysis
+might be null if no valid descriptor names are found or the analysis
+data of a particular sound is not available.;
+#X text 35 381 https://freesound.org/docs/api/resources_apiv2.html#response-sound-list
+;
+#X text 39 19 Full list of descriptors from:;
+#X text 39 39 https://freesound.org/docs/api/allowed_descriptors_for_content_based_search.html
+;
+#X text 44 107 DESCRIPTORS:;
+#X restore 553 39 pd about_descriptors;
+#X obj 499 83 text define -k \$0-descriptors;
+#A set .lowlevel.average_loudness \; .lowlevel.barkbands.dmean \; .lowlevel.barkbands.dmean2
+\; .lowlevel.barkbands.dvar \; .lowlevel.barkbands.dvar2 \; .lowlevel.barkbands.max
+\; .lowlevel.barkbands.mean \; .lowlevel.barkbands.min \; .lowlevel.barkbands.var
+\; .lowlevel.barkbands_kurtosis.dmean \; .lowlevel.barkbands_kurtosis.dmean2
+\; .lowlevel.barkbands_kurtosis.dvar \; .lowlevel.barkbands_kurtosis.dvar2
+\; .lowlevel.barkbands_kurtosis.max \; .lowlevel.barkbands_kurtosis.mean
+\; .lowlevel.barkbands_kurtosis.min \; .lowlevel.barkbands_kurtosis.var
+\; .lowlevel.barkbands_skewness.dmean \; .lowlevel.barkbands_skewness.dmean2
+\; .lowlevel.barkbands_skewness.dvar \; .lowlevel.barkbands_skewness.dvar2
+\; .lowlevel.barkbands_skewness.max \; .lowlevel.barkbands_skewness.mean
+\; .lowlevel.barkbands_skewness.min \; .lowlevel.barkbands_skewness.var
+\; .lowlevel.barkbands_spread.dmean \; .lowlevel.barkbands_spread.dmean2
+\; .lowlevel.barkbands_spread.dvar \; .lowlevel.barkbands_spread.dvar2
+\; .lowlevel.barkbands_spread.max \; .lowlevel.barkbands_spread.mean
+\; .lowlevel.barkbands_spread.min \; .lowlevel.barkbands_spread.var
+\; .lowlevel.dissonance.dmean \; .lowlevel.dissonance.dmean2 \; .lowlevel.dissonance.dvar
+\; .lowlevel.dissonance.dvar2 \; .lowlevel.dissonance.max \; .lowlevel.dissonance.mean
+\; .lowlevel.dissonance.min \; .lowlevel.dissonance.var \; .lowlevel.frequency_bands.dmean
+\; .lowlevel.frequency_bands.dmean2 \; .lowlevel.frequency_bands.dvar
+\; .lowlevel.frequency_bands.dvar2 \; .lowlevel.frequency_bands.max
+\; .lowlevel.frequency_bands.mean \; .lowlevel.frequency_bands.min
+\; .lowlevel.frequency_bands.var \; .lowlevel.hfc.dmean \; .lowlevel.hfc.dmean2
+\; .lowlevel.hfc.dvar \; .lowlevel.hfc.dvar2 \; .lowlevel.hfc.max \;
+.lowlevel.hfc.mean \; .lowlevel.hfc.min \; .lowlevel.hfc.var \; .lowlevel.mfcc.dmean
+\; .lowlevel.mfcc.dmean2 \; .lowlevel.mfcc.dvar \; .lowlevel.mfcc.dvar2
+\; .lowlevel.mfcc.max \; .lowlevel.mfcc.mean \; .lowlevel.mfcc.min
+\; .lowlevel.mfcc.var \; .lowlevel.pitch.dmean \; .lowlevel.pitch.dmean2
+\; .lowlevel.pitch.dvar \; .lowlevel.pitch.dvar2 \; .lowlevel.pitch.max
+\; .lowlevel.pitch.mean \; .lowlevel.pitch.min \; .lowlevel.pitch.var
+\; .lowlevel.pitch_instantaneous_confidence.dmean \; .lowlevel.pitch_instantaneous_confidence.dmean2
+\; .lowlevel.pitch_instantaneous_confidence.dvar \; .lowlevel.pitch_instantaneous_confidence.dvar2
+\; .lowlevel.pitch_instantaneous_confidence.max \; .lowlevel.pitch_instantaneous_confidence.mean
+\; .lowlevel.pitch_instantaneous_confidence.min \; .lowlevel.pitch_instantaneous_confidence.var
+\; .lowlevel.pitch_salience.dmean \; .lowlevel.pitch_salience.dmean2
+\; .lowlevel.pitch_salience.dvar \; .lowlevel.pitch_salience.dvar2
+\; .lowlevel.pitch_salience.max \; .lowlevel.pitch_salience.mean \;
+.lowlevel.pitch_salience.min \; .lowlevel.pitch_salience.var \; .lowlevel.scvalleys.dmean
+\; .lowlevel.scvalleys.dmean2 \; .lowlevel.scvalleys.dvar \; .lowlevel.scvalleys.dvar2
+\; .lowlevel.scvalleys.max \; .lowlevel.scvalleys.mean \; .lowlevel.scvalleys.min
+\; .lowlevel.scvalleys.var \; .lowlevel.silence_rate_20dB.dmean \;
+.lowlevel.silence_rate_20dB.dmean2 \; .lowlevel.silence_rate_20dB.dvar
+\; .lowlevel.silence_rate_20dB.dvar2 \; .lowlevel.silence_rate_20dB.max
+\; .lowlevel.silence_rate_20dB.mean \; .lowlevel.silence_rate_20dB.min
+\; .lowlevel.silence_rate_20dB.var \; .lowlevel.silence_rate_30dB.dmean
+\; .lowlevel.silence_rate_30dB.dmean2 \; .lowlevel.silence_rate_30dB.dvar
+\; .lowlevel.silence_rate_30dB.dvar2 \; .lowlevel.silence_rate_30dB.max
+\; .lowlevel.silence_rate_30dB.mean \; .lowlevel.silence_rate_30dB.min
+\; .lowlevel.silence_rate_30dB.var \; .lowlevel.silence_rate_60dB.dmean
+\; .lowlevel.silence_rate_60dB.dmean2 \; .lowlevel.silence_rate_60dB.dvar
+\; .lowlevel.silence_rate_60dB.dvar2 \; .lowlevel.silence_rate_60dB.max
+\; .lowlevel.silence_rate_60dB.mean \; .lowlevel.silence_rate_60dB.min
+\; .lowlevel.silence_rate_60dB.var \; .lowlevel.spectral_centroid.dmean
+\; .lowlevel.spectral_centroid.dmean2 \; .lowlevel.spectral_centroid.dvar
+\; .lowlevel.spectral_centroid.dvar2 \; .lowlevel.spectral_centroid.max
+\; .lowlevel.spectral_centroid.mean \; .lowlevel.spectral_centroid.min
+\; .lowlevel.spectral_centroid.var \; .lowlevel.spectral_complexity.dmean
+\; .lowlevel.spectral_complexity.dmean2 \; .lowlevel.spectral_complexity.dvar
+\; .lowlevel.spectral_complexity.dvar2 \; .lowlevel.spectral_complexity.max
+\; .lowlevel.spectral_complexity.mean \; .lowlevel.spectral_complexity.min
+\; .lowlevel.spectral_complexity.var \; .lowlevel.spectral_contrast.dmean
+\; .lowlevel.spectral_contrast.dmean2 \; .lowlevel.spectral_contrast.dvar
+\; .lowlevel.spectral_contrast.dvar2 \; .lowlevel.spectral_contrast.max
+\; .lowlevel.spectral_contrast.mean \; .lowlevel.spectral_contrast.min
+\; .lowlevel.spectral_contrast.var \; .lowlevel.spectral_crest.dmean
+\; .lowlevel.spectral_crest.dmean2 \; .lowlevel.spectral_crest.dvar
+\; .lowlevel.spectral_crest.dvar2 \; .lowlevel.spectral_crest.max \;
+.lowlevel.spectral_crest.mean \; .lowlevel.spectral_crest.min \; .lowlevel.spectral_crest.var
+\; .lowlevel.spectral_decrease.dmean \; .lowlevel.spectral_decrease.dmean2
+\; .lowlevel.spectral_decrease.max \; .lowlevel.spectral_decrease.mean
+\; .lowlevel.spectral_decrease.min \; .lowlevel.spectral_energy.dmean
+\; .lowlevel.spectral_energy.dmean2 \; .lowlevel.spectral_energy.dvar
+\; .lowlevel.spectral_energy.dvar2 \; .lowlevel.spectral_energy.max
+\; .lowlevel.spectral_energy.mean \; .lowlevel.spectral_energy.min
+\; .lowlevel.spectral_energy.var \; .lowlevel.spectral_energyband_high.dmean
+\; .lowlevel.spectral_energyband_high.dmean2 \; .lowlevel.spectral_energyband_high.dvar
+\; .lowlevel.spectral_energyband_high.dvar2 \; .lowlevel.spectral_energyband_high.max
+\; .lowlevel.spectral_energyband_high.mean \; .lowlevel.spectral_energyband_high.min
+\; .lowlevel.spectral_energyband_high.var \; .lowlevel.spectral_energyband_low.dmean
+\; .lowlevel.spectral_energyband_low.dmean2 \; .lowlevel.spectral_energyband_low.dvar
+\; .lowlevel.spectral_energyband_low.dvar2 \; .lowlevel.spectral_energyband_low.max
+\; .lowlevel.spectral_energyband_low.mean \; .lowlevel.spectral_energyband_low.min
+\; .lowlevel.spectral_energyband_low.var \; .lowlevel.spectral_energyband_middle_high.dmean
+\; .lowlevel.spectral_energyband_middle_high.dmean2 \; .lowlevel.spectral_energyband_middle_high.dvar
+\; .lowlevel.spectral_energyband_middle_high.dvar2 \; .lowlevel.spectral_energyband_middle_high.max
+\; .lowlevel.spectral_energyband_middle_high.mean \; .lowlevel.spectral_energyband_middle_high.min
+\; .lowlevel.spectral_energyband_middle_high.var \; .lowlevel.spectral_energyband_middle_low.dmean
+\; .lowlevel.spectral_energyband_middle_low.dmean2 \; .lowlevel.spectral_energyband_middle_low.dvar
+\; .lowlevel.spectral_energyband_middle_low.dvar2 \; .lowlevel.spectral_energyband_middle_low.max
+\; .lowlevel.spectral_energyband_middle_low.mean \; .lowlevel.spectral_energyband_middle_low.min
+\; .lowlevel.spectral_energyband_middle_low.var \; .lowlevel.spectral_flatness_db.dmean
+\; .lowlevel.spectral_flatness_db.dmean2 \; .lowlevel.spectral_flatness_db.dvar
+\; .lowlevel.spectral_flatness_db.dvar2 \; .lowlevel.spectral_flatness_db.max
+\; .lowlevel.spectral_flatness_db.mean \; .lowlevel.spectral_flatness_db.min
+\; .lowlevel.spectral_flatness_db.var \; .lowlevel.spectral_flux.dmean
+\; .lowlevel.spectral_flux.dmean2 \; .lowlevel.spectral_flux.dvar \;
+.lowlevel.spectral_flux.dvar2 \; .lowlevel.spectral_flux.max \; .lowlevel.spectral_flux.mean
+\; .lowlevel.spectral_flux.min \; .lowlevel.spectral_flux.var \; .lowlevel.spectral_kurtosis.dmean
+\; .lowlevel.spectral_kurtosis.dmean2 \; .lowlevel.spectral_kurtosis.dvar
+\; .lowlevel.spectral_kurtosis.dvar2 \; .lowlevel.spectral_kurtosis.max
+\; .lowlevel.spectral_kurtosis.mean \; .lowlevel.spectral_kurtosis.min
+\; .lowlevel.spectral_kurtosis.var \; .lowlevel.spectral_rms.dmean
+\; .lowlevel.spectral_rms.dmean2 \; .lowlevel.spectral_rms.dvar \;
+.lowlevel.spectral_rms.dvar2 \; .lowlevel.spectral_rms.max \; .lowlevel.spectral_rms.mean
+\; .lowlevel.spectral_rms.min \; .lowlevel.spectral_rms.var \; .lowlevel.spectral_rolloff.dmean
+\; .lowlevel.spectral_rolloff.dmean2 \; .lowlevel.spectral_rolloff.dvar
+\; .lowlevel.spectral_rolloff.dvar2 \; .lowlevel.spectral_rolloff.max
+\; .lowlevel.spectral_rolloff.mean \; .lowlevel.spectral_rolloff.min
+\; .lowlevel.spectral_rolloff.var \; .lowlevel.spectral_skewness.dmean
+\; .lowlevel.spectral_skewness.dmean2 \; .lowlevel.spectral_skewness.dvar
+\; .lowlevel.spectral_skewness.dvar2 \; .lowlevel.spectral_skewness.max
+\; .lowlevel.spectral_skewness.mean \; .lowlevel.spectral_skewness.min
+\; .lowlevel.spectral_skewness.var \; .lowlevel.spectral_spread.dmean
+\; .lowlevel.spectral_spread.dmean2 \; .lowlevel.spectral_spread.dvar
+\; .lowlevel.spectral_spread.dvar2 \; .lowlevel.spectral_spread.max
+\; .lowlevel.spectral_spread.mean \; .lowlevel.spectral_spread.min
+\; .lowlevel.spectral_spread.var \; .lowlevel.spectral_strongpeak.dmean
+\; .lowlevel.spectral_strongpeak.dmean2 \; .lowlevel.spectral_strongpeak.dvar
+\; .lowlevel.spectral_strongpeak.dvar2 \; .lowlevel.spectral_strongpeak.max
+\; .lowlevel.spectral_strongpeak.mean \; .lowlevel.spectral_strongpeak.min
+\; .lowlevel.spectral_strongpeak.var \; .lowlevel.zerocrossingrate.dmean
+\; .lowlevel.zerocrossingrate.dmean2 \; .lowlevel.zerocrossingrate.dvar
+\; .lowlevel.zerocrossingrate.dvar2 \; .lowlevel.zerocrossingrate.max
+\; .lowlevel.zerocrossingrate.mean \; .lowlevel.zerocrossingrate.min
+\; .lowlevel.zerocrossingrate.var \; .metadata.version.essentia \;
+.rhythm.beats_loudness.dmean \; .rhythm.beats_loudness.dmean2 \; .rhythm.beats_loudness.dvar
+\; .rhythm.beats_loudness.dvar2 \; .rhythm.beats_loudness.max \; .rhythm.beats_loudness.mean
+\; .rhythm.beats_loudness.min \; .rhythm.beats_loudness.var \; .rhythm.beats_loudness_band_ratio.dmean
+\; .rhythm.beats_loudness_band_ratio.dmean2 \; .rhythm.beats_loudness_band_ratio.dvar
+\; .rhythm.beats_loudness_band_ratio.dvar2 \; .rhythm.beats_loudness_band_ratio.max
+\; .rhythm.beats_loudness_band_ratio.mean \; .rhythm.beats_loudness_band_ratio.min
+\; .rhythm.beats_loudness_band_ratio.var \; .rhythm.bpm \; .rhythm.first_peak_bpm
+\; .rhythm.first_peak_spread \; .rhythm.first_peak_weight \; .rhythm.second_peak_bpm
+\; .rhythm.second_peak_spread \; .rhythm.second_peak_weight \; .sfx.der_av_after_max.max
+\; .sfx.der_av_after_max.mean \; .sfx.der_av_after_max.min \; .sfx.effective_duration.max
+\; .sfx.effective_duration.mean \; .sfx.effective_duration.min \; .sfx.flatness.max
+\; .sfx.flatness.mean \; .sfx.flatness.min \; .sfx.logattacktime.max
+\; .sfx.logattacktime.mean \; .sfx.logattacktime.min \; .sfx.max_der_before_max.max
+\; .sfx.max_der_before_max.mean \; .sfx.max_der_before_max.min \; .sfx.max_to_total
+\; .sfx.pitch_after_max_to_before_max_energy_ratio \; .sfx.pitch_centroid
+\; .sfx.pitch_max_to_total \; .sfx.pitch_min_to_total \; .sfx.strongdecay
+\; .sfx.tc_to_total \; .sfx.temporal_centroid.max \; .sfx.temporal_centroid.mean
+\; .sfx.temporal_centroid.min \; .sfx.temporal_decrease.max \; .sfx.temporal_decrease.mean
+\; .sfx.temporal_decrease.min \; .sfx.temporal_kurtosis.max \; .sfx.temporal_kurtosis.mean
+\; .sfx.temporal_kurtosis.min \; .sfx.temporal_skewness.max \; .sfx.temporal_skewness.mean
+\; .sfx.temporal_skewness.min \; .sfx.temporal_spread.max \; .sfx.temporal_spread.mean
+\; .sfx.temporal_spread.min \; .tonal.chords_changes_rate \; .tonal.chords_histogram
+\; .tonal.chords_key \; .tonal.chords_number_rate \; .tonal.chords_scale
+\; .tonal.chords_strength.dmean \; .tonal.chords_strength.dmean2 \;
+.tonal.chords_strength.dvar \; .tonal.chords_strength.dvar2 \; .tonal.chords_strength.max
+\; .tonal.chords_strength.mean \; .tonal.chords_strength.min \; .tonal.chords_strength.var
+\; .tonal.hpcp.dmean \; .tonal.hpcp.dmean2 \; .tonal.hpcp.dvar \; .tonal.hpcp.dvar2
+\; .tonal.hpcp.max \; .tonal.hpcp.mean \; .tonal.hpcp.min \; .tonal.hpcp.var
+\; .tonal.hpcp_highres.dmean \; .tonal.hpcp_highres.dmean2 \; .tonal.hpcp_highres.dvar
+\; .tonal.hpcp_highres.dvar2 \; .tonal.hpcp_highres.max \; .tonal.hpcp_highres.mean
+\; .tonal.hpcp_highres.min \; .tonal.hpcp_highres.var \; .tonal.key_key
+\; .tonal.key_scale \; .tonal.key_strength \; .tonal.tuning_frequency.dmean
+\; .tonal.tuning_frequency.dmean2 \; .tonal.tuning_frequency.dvar \;
+.tonal.tuning_frequency.dvar2 \; .tonal.tuning_frequency.max \; .tonal.tuning_frequency.mean
+\; .tonal.tuning_frequency.min \; .tonal.tuning_frequency.var \;;
+#X obj 316 137 text get \$0-descriptors;
+#X msg 567 127 bang;
+#X obj 567 151 text size \$0-descriptors;
+#X floatatom 567 175 5 0 0 0 - - -;
+#X obj 11 15 r \$0-desc-apply;
+#X obj 316 73 r \$0-desc-num;
+#X obj 233 237 r \$0-desc-add;
+#X obj 141 304 r \$0-desc-clear;
+#X obj 385 350 s \$0-desc-word-set;
+#X text 155 10 THIS NEED THE analysis FIELD TO BE SET \, OTHERWISE
+IT WONT MAKE ANY SENSE, f 73;
+#X obj 154 464 s \$0-descriptors-word-set;
+#X obj 124 50 r \$0-descriptors-word;
+#X msg 338 392 37 50 67;
+#X text 409 393 <-- a comma in hex : %2C;
+#X connect 0 1 16 0;
+#X connect 1 0 26 0;
+#X connect 2 0 15 1;
+#X connect 3 0 7 0;
+#X connect 4 0 5 0;
+#X connect 5 0 22 0;
+#X connect 6 0 36 0;
+#X connect 7 1 6 0;
+#X connect 8 0 23 0;
+#X connect 9 0 6 0;
+#X connect 10 0 11 0;
+#X connect 10 0 13 0;
+#X connect 11 0 10 1;
+#X connect 12 0 38 0;
+#X connect 13 0 12 0;
+#X connect 14 0 10 1;
+#X connect 15 0 17 0;
+#X connect 16 0 21 0;
+#X connect 17 0 18 0;
+#X connect 18 0 10 0;
+#X connect 18 1 4 0;
+#X connect 18 2 19 0;
+#X connect 19 0 17 1;
+#X connect 20 0 17 1;
+#X connect 21 0 2 0;
+#X connect 21 1 34 0;
+#X connect 21 2 20 0;
+#X connect 22 0 3 0;
+#X connect 22 1 3 0;
+#X connect 26 0 0 0;
+#X connect 27 0 28 0;
+#X connect 28 0 29 0;
+#X connect 30 0 8 0;
+#X connect 31 0 1 0;
+#X connect 32 0 15 0;
+#X connect 33 0 9 0;
+#X connect 33 0 14 0;
+#X connect 33 0 3 1;
+#X connect 37 0 8 1;
+#X connect 38 0 4 0;
+#X restore 115 191 pd descriptors;
+#X msg 115 215 descriptors \$1;
+#X msg 263 213 normalized \$1;
+#X obj 263 237 s \$0-q;
+#N canvas 0 22 450 300 normalized 0;
+#X obj 137 83 r \$0-normalized;
+#X obj 65 170 outlet;
+#X obj 70 106 f;
+#X obj 52 40 r \$0-normalized-apply;
+#X obj 67 138 change;
+#X connect 0 0 2 1;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X restore 263 190 pd normalized;
+#N canvas 0 22 450 300 mode 0;
+#X obj 41 23 r \$0-mode-apply;
+#X obj 41 47 f;
+#X obj 41 71 outlet;
+#X obj 77 48 r \$0-mode;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 1 1;
+#X restore 23 17 pd mode;
+#X msg 23 41 mode \$1;
+#X obj 23 65 s \$0-q;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 5 0 2 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 13 0 14 0;
+#X connect 14 0 12 0;
+#X connect 15 0 16 0;
+#X connect 17 0 15 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;
+#X restore 301 240 pd gui_for_this_section;
+#X text 129 240 See here for more info:;
+#X text 432 190 <--TODO;
+#X text 442 210 <--TODO;
+#X restore 293 194 pd SEARCH_MODE;
+#X text 136 24 A VERY SIMPLE TUTORIAL;
+#X restore 433 188 pd TUTORIAL;
+#X connect 2 0 1 0;
+#X connect 2 1 15 0;
+#X connect 2 2 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 10 0 2 0;

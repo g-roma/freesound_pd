@@ -1,0 +1,66 @@
+#!/bin/bash
+host="https://freesound.org/apiv2/oauth2"
+resp=tokens.json
+usage="
+Script to get code, access token and to refresh access token from
+https://freesound.org
+
+The access token is retrieved in $resp file, in this same directory.
+
+You need client id and secret api passed as variables.
+
+usage:
+
+	$ sh auth -i CLIENT_ID [-s CLIENT_SECRET] [-r] [-c <code>] [-h]
+
+examples:
+
+	GET ACCESS CODE: 
+		$ sh auth -i CLIENT_ID -a
+
+	GET ACCESS TOKEN: 
+		$ sh auth -i CLIENT_ID -s CLIENT_SECRET -c <code>
+
+	REFRESH ACCESS TOKEN: 
+		$ sh auth -i CLIENT_ID -s CLIENT_SECRET -r
+"
+
+function get_code()
+{
+	code=$1
+	echo "retrieving access tokens in $resp"
+	curl -X POST -d "client_id=$id&client_secret=$secret&grant_type=authorization_code&code=$code" "$host/access_token/" > $resp
+}
+
+function refresh()
+{
+	refresh=`cat $resp | jq -r .refresh_token`
+	curl -X POST -d "client_id=$id&client_secret=$secret&grant_type=refresh_token&refresh_token=$refresh" "$host/access_token/" > $resp
+}
+
+function auth()
+{
+	echo "
+open the follwowing link in your browser and copy the <code> field:
+		
+	$host/authorize/?client_id=$1&response_type=code&state=xyz
+
+"
+}
+
+while getopts i:as:hc:r option
+do
+case "${option}"
+in
+i) id=${OPTARG};;
+a) auth $id;;
+s) secret=${OPTARG};;
+h) echo "$usage";;
+c) get_code "${OPTARG}";;
+r) refresh ;;
+esac
+done
+
+if [ $OPTIND -eq 1 ]; then echo "$usage"; fi
+
+exit

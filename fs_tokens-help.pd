@@ -1,0 +1,20 @@
+#N canvas 524 47 524 388 12;
+#X text 149 38 Apply for a FREE API key:;
+#X text 115 55 http://www.freesound.org/api/apply/;
+#X text 181 23 "Freesound Pd";
+#X msg 66 231 tokens.json;
+#X obj 210 331 print client_secret;
+#X obj 66 330 print access_token;
+#X msg 170 244 client.json;
+#X obj 66 284 fs_tokens tokens.json;
+#X text 75 93 This patch loads up single-object json files;
+#X text 48 130 The right outlet outputs the client_secret \, if given
+a json file whose object contains a "client_secret" key.;
+#X text 48 180 The left outlet outputs the access_token \, if given
+a json file whose object contains a "access_token" key.;
+#X text 270 292 See also the "auth" script;
+#X text 274 309 included in this distribution;
+#X connect 3 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 7 1 4 0;
